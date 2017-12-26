@@ -10,7 +10,10 @@ import {
   GETTING_POST_FAILURE,
   DELETING_POST,
   DELETING_POST_SUCCESS,
-  DELETING_POST_FAILURE
+  DELETING_POST_FAILURE,
+  UPDATING_POST,
+  UPDATING_POST_SUCCESS,
+  UPDATING_POST_FAILURE
 } from './constants';
 import { PostAPI } from '../utils/api';
 
@@ -138,5 +141,37 @@ export function deletePostSuccess() {
 export function deletePostFailure(err) {
   return {
     type: DELETING_POST_FAILURE
+  };
+}
+
+export function updatePost(postId, post) {
+  return dispatch => {
+    dispatch(updatingPost);
+    PostAPI.update(postId, post)
+      .then(data => {
+        dispatch(updatePostSuccess(data));
+      })
+      .catch(err => {
+        dispatch(updatePostFailure(err));
+      });
+  };
+}
+
+export function updatingPost() {
+  return {
+    type: UPDATING_POST
+  };
+}
+
+export function updatePostSuccess(post) {
+  return {
+    type: UPDATING_POST_SUCCESS,
+    post
+  };
+}
+
+export function updatePostFailure(err) {
+  return {
+    type: UPDATING_POST_FAILURE
   };
 }
