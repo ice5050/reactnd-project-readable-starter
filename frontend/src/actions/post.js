@@ -13,7 +13,10 @@ import {
   DELETING_POST_FAILURE,
   UPDATING_POST,
   UPDATING_POST_SUCCESS,
-  UPDATING_POST_FAILURE
+  UPDATING_POST_FAILURE,
+  VOTING_POST,
+  VOTING_POST_SUCCESS,
+  VOTING_POST_FAILURE
 } from './constants';
 import { PostAPI } from '../utils/api';
 
@@ -51,7 +54,7 @@ export function addPostFailure(err) {
 
 export function getPosts() {
   return dispatch => {
-    dispatch(gettingPosts);
+    dispatch(gettingPosts());
     PostAPI.all()
       .then(data => {
         dispatch(getPostsSuccess(data));
@@ -83,7 +86,7 @@ export function getPostsFailure(err) {
 
 export function getPost(postId) {
   return dispatch => {
-    dispatch(gettingPost);
+    dispatch(gettingPost());
     PostAPI.get(postId)
       .then(data => {
         dispatch(getPostSuccess(data));
@@ -115,10 +118,10 @@ export function getPostFailure(err) {
 
 export function deletePost(postId) {
   return dispatch => {
-    dispatch(deletingPost);
+    dispatch(deletingPost());
     PostAPI.delete(postId)
       .then(() => {
-        dispatch(deletePostSuccess());
+        dispatch(deletePostSuccess(postId));
       })
       .catch(err => {
         dispatch(deletePostFailure(err));
@@ -132,9 +135,10 @@ export function deletingPost() {
   };
 }
 
-export function deletePostSuccess() {
+export function deletePostSuccess(postId) {
   return {
-    type: DELETING_POST_SUCCESS
+    type: DELETING_POST_SUCCESS,
+    postId
   };
 }
 
@@ -146,7 +150,7 @@ export function deletePostFailure(err) {
 
 export function updatePost(postId, post) {
   return dispatch => {
-    dispatch(updatingPost);
+    dispatch(updatingPost());
     PostAPI.update(postId, post)
       .then(data => {
         dispatch(updatePostSuccess(data));
@@ -173,5 +177,37 @@ export function updatePostSuccess(post) {
 export function updatePostFailure(err) {
   return {
     type: UPDATING_POST_FAILURE
+  };
+}
+
+export function votePost(postId, type) {
+  return dispatch => {
+    dispatch(votingPost());
+    PostAPI.vote(postId, type)
+      .then(data => {
+        dispatch(votePostSuccess(data));
+      })
+      .catch(err => {
+        dispatch(votePostFailure(err));
+      });
+  };
+}
+
+export function votingPost() {
+  return {
+    type: VOTING_POST
+  };
+}
+
+export function votePostSuccess(post) {
+  return {
+    type: VOTING_POST_SUCCESS,
+    post
+  };
+}
+
+export function votePostFailure(err) {
+  return {
+    type: VOTING_POST_FAILURE
   };
 }
