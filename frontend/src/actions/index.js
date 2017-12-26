@@ -4,7 +4,10 @@ import {
   ADDING_POST_FAILURE,
   GETTING_POSTS,
   GETTING_POSTS_SUCCESS,
-  GETTING_POSTS_FAILURE
+  GETTING_POSTS_FAILURE,
+  GETTING_POST,
+  GETTING_POST_SUCCESS,
+  GETTING_POST_FAILURE
 } from './constants';
 import { PostAPI } from '../utils/api';
 
@@ -69,5 +72,37 @@ export function getPostsSuccess(posts) {
 export function getPostsFailure(err) {
   return {
     type: GETTING_POSTS_FAILURE
+  };
+}
+
+export function getPost(postId) {
+  return dispatch => {
+    dispatch(gettingPost);
+    PostAPI.get(postId)
+      .then(data => {
+        dispatch(getPostSuccess(data));
+      })
+      .catch(err => {
+        dispatch(getPostFailure(err));
+      });
+  };
+}
+
+export function gettingPost() {
+  return {
+    type: GETTING_POST
+  };
+}
+
+export function getPostSuccess(post) {
+  return {
+    type: GETTING_POST_SUCCESS,
+    post
+  };
+}
+
+export function getPostFailure(err) {
+  return {
+    type: GETTING_POST_FAILURE
   };
 }
