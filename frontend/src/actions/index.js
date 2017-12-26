@@ -7,7 +7,10 @@ import {
   GETTING_POSTS_FAILURE,
   GETTING_POST,
   GETTING_POST_SUCCESS,
-  GETTING_POST_FAILURE
+  GETTING_POST_FAILURE,
+  DELETING_POST,
+  DELETING_POST_SUCCESS,
+  DELETING_POST_FAILURE
 } from './constants';
 import { PostAPI } from '../utils/api';
 
@@ -104,5 +107,36 @@ export function getPostSuccess(post) {
 export function getPostFailure(err) {
   return {
     type: GETTING_POST_FAILURE
+  };
+}
+
+export function deletePost(postId) {
+  return dispatch => {
+    dispatch(deletingPost);
+    PostAPI.delete(postId)
+      .then(() => {
+        dispatch(deletePostSuccess());
+      })
+      .catch(err => {
+        dispatch(deletePostFailure(err));
+      });
+  };
+}
+
+export function deletingPost() {
+  return {
+    type: DELETING_POST
+  };
+}
+
+export function deletePostSuccess() {
+  return {
+    type: DELETING_POST_SUCCESS
+  };
+}
+
+export function deletePostFailure(err) {
+  return {
+    type: DELETING_POST_FAILURE
   };
 }
