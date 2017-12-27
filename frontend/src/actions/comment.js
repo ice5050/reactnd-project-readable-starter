@@ -131,7 +131,7 @@ export function deleteComment(commentId) {
 
 export function deletingComment() {
   return {
-    type: DELETING_POST
+    type: DELETING_COMMENT
   };
 }
 
