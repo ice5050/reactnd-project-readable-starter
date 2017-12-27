@@ -1,9 +1,4 @@
 import { combineReducers } from 'redux';
+import category from './category'
 
-const initialState = {};
-
-function reducer(state = initialState, action) {
-  return state;
-}
-
-export default reducer;
+export default combineReducers({ category });
