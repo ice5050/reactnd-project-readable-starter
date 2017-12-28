@@ -12,8 +12,8 @@ export function getCategories() {
   return dispatch => {
     dispatch(gettingCategories());
     CategoryAPI.all()
-      .then(data => {
-        dispatch(getCategoriesSuccess(data));
+      .then(resp => {
+        dispatch(getCategoriesSuccess(resp.data.categories));
       })
       .catch(err => {
         dispatch(getCategoriesFailure(err));

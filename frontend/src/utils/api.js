@@ -1,27 +1,31 @@
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_DOMAIN;
+
 axios.defaults.headers.common['Authorization'] = 'auth';
 
 export const CategoryAPI = {
-  all: () => axios.get('/categories'),
-  get: category => axios.get(`/${category}/posts`)
+  all: () => axios.get(`${API_URL}/categories`),
+  get: category => axios.get(`${API_URL}/${category}/posts`)
 };
 
 export const PostAPI = {
-  all: () => axios.get('/posts'),
-  create: post => axios.post('/posts', post),
-  delete: postId => axios.delete(`/posts/${postId}`),
-  get: postId => axios.get(`/posts/${postId}`),
-  update: (postId, post) => axios.put(`/posts/${postId}`, post),
-  vote: (postId, type = 'upVote') => axios.post(`/posts/${postId}`, type)
+  all: () => axios.get(`${API_URL}/posts`),
+  create: post => axios.post(`${API_URL}/posts`, post),
+  delete: postId => axios.delete(`${API_URL}/posts/${postId}`),
+  get: postId => axios.get(`${API_URL}/posts/${postId}`),
+  update: (postId, post) => axios.put(`${API_URL}/posts/${postId}`, post),
+  vote: (postId, type = 'upVote') =>
+    axios.post(`${API_URL}/posts/${postId}`, type)
 };
 
 export const CommentAPI = {
-  all: postId => axios.get(`/posts/${postId}/comments`),
-  create: comment => axios.post('/comments', comment),
-  delete: commentId => axios.delete(`/comments/${commentId}`),
-  get: commentId => axios.get(`/comments/${commentId}`),
-  update: (commentId, comment) => axios.put(`/comments/${commentId}`, comment),
+  all: postId => axios.get(`${API_URL}/posts/${postId}/comments`),
+  create: comment => axios.post(`${API_URL}/comments`, comment),
+  delete: commentId => axios.delete(`${API_URL}/comments/${commentId}`),
+  get: commentId => axios.get(`${API_URL}/comments/${commentId}`),
+  update: (commentId, comment) =>
+    axios.put(`${API_URL}/comments/${commentId}`, comment),
   vote: (commentId, type = 'upVote') =>
-    axios.post(`/comments/${commentId}`, type)
+    axios.post(`${API_URL}/comments/${commentId}`, type)
 };
